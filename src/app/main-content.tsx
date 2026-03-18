@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/resizable";
 import { FileSystemProvider } from "@/lib/contexts/file-system-context";
 import { ChatProvider } from "@/lib/contexts/chat-context";
+import { ThemeProvider } from "@/lib/contexts/theme-context";
 import { ChatInterface } from "@/components/chat/ChatInterface";
 import { FileTree } from "@/components/editor/FileTree";
 import { CodeEditor } from "@/components/editor/CodeEditor";
@@ -35,6 +36,7 @@ export function MainContent({ user, project }: MainContentProps) {
   const [activeView, setActiveView] = useState<"preview" | "code">("preview");
 
   return (
+    <ThemeProvider>
     <FileSystemProvider initialData={project?.data}>
       <ChatProvider projectId={project?.id} initialMessages={project?.messages}>
         <div
@@ -224,5 +226,6 @@ export function MainContent({ user, project }: MainContentProps) {
         </div>
       </ChatProvider>
     </FileSystemProvider>
+    </ThemeProvider>
   );
 }

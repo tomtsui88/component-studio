@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Plus, LogOut, FolderOpen, ChevronDown } from "lucide-react";
+import { Plus, LogOut, FolderOpen, ChevronDown, Sun, Moon } from "lucide-react";
 import { AuthDialog } from "@/components/auth/AuthDialog";
 import { signOut } from "@/actions";
+import { useTheme } from "@/lib/contexts/theme-context";
 import { getProjects } from "@/actions/get-projects";
 import { createProject } from "@/actions/create-project";
 import {
@@ -35,6 +36,25 @@ interface Project {
   name: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      className="h-8 w-8"
+      onClick={toggleTheme}
+      title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+    >
+      {theme === "light" ? (
+        <Moon className="h-4 w-4" />
+      ) : (
+        <Sun className="h-4 w-4" />
+      )}
+    </Button>
+  );
 }
 
 export function HeaderActions({ user, projectId }: HeaderActionsProps) {
@@ -95,7 +115,8 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
   if (!user) {
     return (
       <>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button variant="outline" className="h-8" onClick={handleSignInClick}>
             Sign In
           </Button>
@@ -114,6 +135,7 @@ export function HeaderActions({ user, projectId }: HeaderActionsProps) {
 
   return (
     <div className="flex items-center gap-2">
+      <ThemeToggle />
       {!initialLoading && (
         <Popover open={projectsOpen} onOpenChange={setProjectsOpen}>
           <PopoverTrigger asChild>
